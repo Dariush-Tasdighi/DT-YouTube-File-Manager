@@ -20,6 +20,9 @@ partial class MainForm
 	{
 		myMenuStrip = new MenuStrip();
 		headerPanel = new Panel();
+		channelTitleComboBox = new ComboBox();
+		videoTitleLabel = new Label();
+		channelTitleLabel = new Label();
 		selectVideoPlayerPathNameButton = new Button();
 		selectBrowserPathNameButton = new Button();
 		videoCountTextBox = new TextBox();
@@ -29,7 +32,7 @@ partial class MainForm
 		videoPlayerPathNameLabel = new Label();
 		videoPlayerPathNameTextBox = new TextBox();
 		searchButton = new Button();
-		searchTextBox = new TextBox();
+		videoTitleTextBox = new TextBox();
 		updateButton = new Button();
 		targetPathTextBox = new TextBox();
 		targetPathLabel = new Label();
@@ -64,6 +67,9 @@ partial class MainForm
 		// 
 		// headerPanel
 		// 
+		headerPanel.Controls.Add(channelTitleComboBox);
+		headerPanel.Controls.Add(videoTitleLabel);
+		headerPanel.Controls.Add(channelTitleLabel);
 		headerPanel.Controls.Add(selectVideoPlayerPathNameButton);
 		headerPanel.Controls.Add(selectBrowserPathNameButton);
 		headerPanel.Controls.Add(videoCountTextBox);
@@ -73,15 +79,42 @@ partial class MainForm
 		headerPanel.Controls.Add(videoPlayerPathNameLabel);
 		headerPanel.Controls.Add(videoPlayerPathNameTextBox);
 		headerPanel.Controls.Add(searchButton);
-		headerPanel.Controls.Add(searchTextBox);
+		headerPanel.Controls.Add(videoTitleTextBox);
 		headerPanel.Controls.Add(updateButton);
 		headerPanel.Controls.Add(targetPathTextBox);
 		headerPanel.Controls.Add(targetPathLabel);
 		headerPanel.Dock = DockStyle.Top;
 		headerPanel.Location = new Point(0, 24);
 		headerPanel.Name = "headerPanel";
-		headerPanel.Size = new Size(1105, 140);
+		headerPanel.Size = new Size(1105, 171);
 		headerPanel.TabIndex = 1;
+		// 
+		// channelTitleComboBox
+		// 
+		channelTitleComboBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+		channelTitleComboBox.FormattingEnabled = true;
+		channelTitleComboBox.Location = new Point(278, 102);
+		channelTitleComboBox.Name = "channelTitleComboBox";
+		channelTitleComboBox.Size = new Size(824, 28);
+		channelTitleComboBox.TabIndex = 12;
+		// 
+		// videoTitleLabel
+		// 
+		videoTitleLabel.AutoSize = true;
+		videoTitleLabel.Location = new Point(177, 139);
+		videoTitleLabel.Name = "videoTitleLabel";
+		videoTitleLabel.Size = new Size(81, 20);
+		videoTitleLabel.TabIndex = 13;
+		videoTitleLabel.Text = "Video Title";
+		// 
+		// channelTitleLabel
+		// 
+		channelTitleLabel.AutoSize = true;
+		channelTitleLabel.Location = new Point(177, 105);
+		channelTitleLabel.Name = "channelTitleLabel";
+		channelTitleLabel.Size = new Size(95, 20);
+		channelTitleLabel.TabIndex = 11;
+		channelTitleLabel.Text = "Channel Title";
 		// 
 		// selectVideoPlayerPathNameButton
 		// 
@@ -160,21 +193,21 @@ partial class MainForm
 		// searchButton
 		// 
 		searchButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-		searchButton.Location = new Point(1008, 102);
+		searchButton.Location = new Point(1008, 136);
 		searchButton.Name = "searchButton";
 		searchButton.Size = new Size(94, 27);
-		searchButton.TabIndex = 12;
+		searchButton.TabIndex = 15;
 		searchButton.Text = "&Search";
 		searchButton.UseVisualStyleBackColor = true;
 		searchButton.Click += SearchButton_Click;
 		// 
-		// searchTextBox
+		// videoTitleTextBox
 		// 
-		searchTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-		searchTextBox.Location = new Point(177, 102);
-		searchTextBox.Name = "searchTextBox";
-		searchTextBox.Size = new Size(825, 27);
-		searchTextBox.TabIndex = 11;
+		videoTitleTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+		videoTitleTextBox.Location = new Point(278, 136);
+		videoTitleTextBox.Name = "videoTitleTextBox";
+		videoTitleTextBox.Size = new Size(724, 27);
+		videoTitleTextBox.TabIndex = 14;
 		// 
 		// updateButton
 		// 
@@ -224,7 +257,7 @@ partial class MainForm
 		videoUrlLabel.Location = new Point(3, 9);
 		videoUrlLabel.Name = "videoUrlLabel";
 		videoUrlLabel.Size = new Size(78, 20);
-		videoUrlLabel.TabIndex = 3;
+		videoUrlLabel.TabIndex = 0;
 		videoUrlLabel.Text = "Video URL";
 		// 
 		// openVideoButton
@@ -233,7 +266,7 @@ partial class MainForm
 		openVideoButton.Location = new Point(1008, 6);
 		openVideoButton.Name = "openVideoButton";
 		openVideoButton.Size = new Size(94, 27);
-		openVideoButton.TabIndex = 5;
+		openVideoButton.TabIndex = 2;
 		openVideoButton.Text = "Browse";
 		openVideoButton.UseVisualStyleBackColor = true;
 		openVideoButton.Click += OpenVideoButton_Click;
@@ -245,7 +278,7 @@ partial class MainForm
 		videoUrlTextBox.Name = "videoUrlTextBox";
 		videoUrlTextBox.ReadOnly = true;
 		videoUrlTextBox.Size = new Size(825, 27);
-		videoUrlTextBox.TabIndex = 4;
+		videoUrlTextBox.TabIndex = 1;
 		// 
 		// channelUrlLabel
 		// 
@@ -253,7 +286,7 @@ partial class MainForm
 		channelUrlLabel.Location = new Point(3, 42);
 		channelUrlLabel.Name = "channelUrlLabel";
 		channelUrlLabel.Size = new Size(92, 20);
-		channelUrlLabel.TabIndex = 0;
+		channelUrlLabel.TabIndex = 3;
 		channelUrlLabel.Text = "Channel URL";
 		// 
 		// openChannelButton
@@ -262,7 +295,7 @@ partial class MainForm
 		openChannelButton.Location = new Point(1008, 39);
 		openChannelButton.Name = "openChannelButton";
 		openChannelButton.Size = new Size(94, 27);
-		openChannelButton.TabIndex = 2;
+		openChannelButton.TabIndex = 5;
 		openChannelButton.Text = "Browse";
 		openChannelButton.UseVisualStyleBackColor = true;
 		openChannelButton.Click += OpenChannelButton_Click;
@@ -274,13 +307,13 @@ partial class MainForm
 		channelUrlTextBox.Name = "channelUrlTextBox";
 		channelUrlTextBox.ReadOnly = true;
 		channelUrlTextBox.Size = new Size(825, 27);
-		channelUrlTextBox.TabIndex = 1;
+		channelUrlTextBox.TabIndex = 4;
 		// 
 		// channelsPanel
 		// 
 		channelsPanel.Controls.Add(channelsDataGridView);
 		channelsPanel.Dock = DockStyle.Top;
-		channelsPanel.Location = new Point(0, 164);
+		channelsPanel.Location = new Point(0, 195);
 		channelsPanel.Name = "channelsPanel";
 		channelsPanel.Size = new Size(1105, 112);
 		channelsPanel.TabIndex = 4;
@@ -298,7 +331,7 @@ partial class MainForm
 		// channelsSplitter
 		// 
 		channelsSplitter.Dock = DockStyle.Top;
-		channelsSplitter.Location = new Point(0, 276);
+		channelsSplitter.Location = new Point(0, 307);
 		channelsSplitter.Name = "channelsSplitter";
 		channelsSplitter.Size = new Size(1105, 10);
 		channelsSplitter.TabIndex = 2;
@@ -308,9 +341,9 @@ partial class MainForm
 		// 
 		videosPanel.Controls.Add(videosDataGridView);
 		videosPanel.Dock = DockStyle.Fill;
-		videosPanel.Location = new Point(0, 286);
+		videosPanel.Location = new Point(0, 317);
 		videosPanel.Name = "videosPanel";
-		videosPanel.Size = new Size(1105, 282);
+		videosPanel.Size = new Size(1105, 251);
 		videosPanel.TabIndex = 6;
 		// 
 		// videosDataGridView
@@ -320,7 +353,7 @@ partial class MainForm
 		videosDataGridView.Location = new Point(0, 0);
 		videosDataGridView.Name = "videosDataGridView";
 		videosDataGridView.RowHeadersWidth = 51;
-		videosDataGridView.Size = new Size(1105, 282);
+		videosDataGridView.Size = new Size(1105, 251);
 		videosDataGridView.TabIndex = 0;
 		// 
 		// MainForm
@@ -365,7 +398,7 @@ partial class MainForm
 	private DataGridView channelsDataGridView;
 	private DataGridView videosDataGridView;
 	private Button searchButton;
-	private TextBox searchTextBox;
+	private TextBox videoTitleTextBox;
 	private Label searchLabel;
 	private Label videoPlayerPathNameLabel;
 	private TextBox videoPlayerPathNameTextBox;
@@ -380,4 +413,7 @@ partial class MainForm
 	private TextBox videoCountTextBox;
 	private Button selectVideoPlayerPathNameButton;
 	private Button selectBrowserPathNameButton;
+	private ComboBox channelTitleComboBox;
+	private Label videoTitleLabel;
+	private Label channelTitleLabel;
 }

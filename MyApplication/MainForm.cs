@@ -19,7 +19,7 @@ public partial class MainForm : Form
 		// **************************************************
 		AcceptButton = searchButton;
 
-		Text = "DT YouTube File Manager - Version 1.0 - Always! Persian Gulf";
+		Text = "DT YouTube File Manager - Version 1.1 - Always! Persian Gulf";
 
 		targetPathTextBox.Text = @"D:\YouTubeDownloads";
 		videoPlayerPathNameTextBox.Text = @"C:\Program Files\VideoLAN\VLC\vlc.exe";
@@ -138,27 +138,55 @@ public partial class MainForm : Form
 
 		List<YouTubeVideoItem> list;
 
-		if (string.IsNullOrWhiteSpace(value: searchTextBox.Text))
+		if(string.IsNullOrWhiteSpace(value: channelTitleComboBox.Text))
 		{
-			list =
-				List
-				.OrderBy(current => current.AuthorChannelTitle)
-				.ThenByDescending(current => current.UploadedDate)
-				.ToList()
-				;
+			if (string.IsNullOrWhiteSpace(value: videoTitleTextBox.Text))
+			{
+				list =
+					List
+					.OrderBy(current => current.AuthorChannelTitle)
+					.ThenByDescending(current => current.UploadedDate)
+					.ToList()
+					;
+			}
+			else
+			{
+				list =
+					List
+					.Where(current =>
+						current.Title != null &&
+						current.Title.ToLower().Contains(videoTitleTextBox.Text.ToLower()))
+					.ToList()
+					;
+			}
 		}
 		else
 		{
-			list =
-				List
-				.Where(current =>
-					current.Title != null &&
-					current.Title.ToLower().Contains(searchTextBox.Text.ToLower()))
-				//.OrderBy(current => current.AuthorChannelTitle)
-				//.ThenByDescending(current => current.UploadedDate)
-				//.OrderByDescending(current => current.UploadedDate)
-				.ToList()
-				;
+			if (string.IsNullOrWhiteSpace(value: videoTitleTextBox.Text))
+			{
+				list =
+					List
+					.Where(current =>
+						current.AuthorChannelTitle != null &&
+						current.AuthorChannelTitle.ToLower().Contains(channelTitleComboBox.Text.ToLower()))
+					.OrderBy(current => current.AuthorChannelTitle)
+					.ThenByDescending(current => current.UploadedDate)
+					.ToList()
+					;
+			}
+			else
+			{
+				list =
+					List
+					.Where(current =>
+						current.AuthorChannelTitle != null &&
+						current.AuthorChannelTitle.ToLower().Contains(channelTitleComboBox.Text.ToLower()))
+					.Where(current =>
+						current.Title != null &&
+						current.Title.ToLower().Contains(videoTitleTextBox.Text.ToLower()))
+					.ToList()
+					;
+			}
 		}
 
 		videosDataGridView.DataSource = list;
