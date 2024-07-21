@@ -10,6 +10,8 @@ public partial class MainForm : Form
 	}
 
 	private List<YouTubeVideoItem> List { get; set; } = [];
+	private OpenFileDialog MyOpenFileDialog { get; set; } = new();
+	private YouTubeVideoItem? SelectedYouTubeVideoItem { get; set; }
 
 	private void MainForm_Load(object sender, EventArgs e)
 	{
@@ -19,7 +21,7 @@ public partial class MainForm : Form
 		// **************************************************
 		AcceptButton = searchButton;
 
-		Text = "DT YouTube File Manager - Version 1.1 - Always! Persian Gulf";
+		Text = "DT YouTube File Manager - Version 1.2 - Always! Persian Gulf";
 
 		targetPathTextBox.Text = @"D:\YouTubeDownloads";
 		videoPlayerPathNameTextBox.Text = @"C:\Program Files\VideoLAN\VLC\vlc.exe";
@@ -120,7 +122,7 @@ public partial class MainForm : Form
 			}
 		}
 
-		videoCountTextBox.Text =
+		totalVideoCountTextBox.Text =
 			List.Count.ToString(format: "#,##0");
 
 		UpdateDataGridViews();
@@ -138,7 +140,7 @@ public partial class MainForm : Form
 
 		List<YouTubeVideoItem> list;
 
-		if(string.IsNullOrWhiteSpace(value: channelTitleComboBox.Text))
+		if (string.IsNullOrWhiteSpace(value: channelTitleComboBox.Text))
 		{
 			if (string.IsNullOrWhiteSpace(value: videoTitleTextBox.Text))
 			{
@@ -156,6 +158,7 @@ public partial class MainForm : Form
 					.Where(current =>
 						current.Title != null &&
 						current.Title.ToLower().Contains(videoTitleTextBox.Text.ToLower()))
+					.OrderByDescending(current => current.UploadedDate)
 					.ToList()
 					;
 			}
@@ -189,6 +192,9 @@ public partial class MainForm : Form
 			}
 		}
 
+		searchVideoCountTextBox.Text =
+			list.Count.ToString(format: "#,##0");
+
 		videosDataGridView.DataSource = list;
 
 		for (int columnIndex = 0; columnIndex <= videosDataGridView.Columns.Count - 1; columnIndex++)
@@ -221,16 +227,17 @@ public partial class MainForm : Form
 
 	private void VideosDataGridView_RowEnter(object? sender, DataGridViewCellEventArgs e)
 	{
-		var selectedYouTubeVideoItem =
+		SelectedYouTubeVideoItem =
 			videosDataGridView.Rows[e.RowIndex].DataBoundItem as YouTubeVideoItem;
 
-		if (selectedYouTubeVideoItem is null)
+		if (SelectedYouTubeVideoItem is null)
 		{
 			return;
 		}
 
-		videoUrlTextBox.Text = selectedYouTubeVideoItem.Url;
-		channelUrlTextBox.Text = selectedYouTubeVideoItem.AuthorChannelUrl;
+		videoUrlTextBox.Text = SelectedYouTubeVideoItem.Url;
+		videoFileNameTextBox.Text = SelectedYouTubeVideoItem.FileName;
+		channelUrlTextBox.Text = SelectedYouTubeVideoItem.AuthorChannelUrl;
 	}
 
 	private void VideosDataGridView_CellDoubleClick(object? sender, DataGridViewCellEventArgs e)
@@ -295,7 +302,7 @@ public partial class MainForm : Form
 		process.Start();
 	}
 
-	private void OpenVideoButton_Click(object sender, EventArgs e)
+	private void OpenVideoUrlButton_Click(object sender, EventArgs e)
 	{
 		if (string.IsNullOrWhiteSpace(value: videoUrlTextBox.Text))
 		{
@@ -341,7 +348,7 @@ public partial class MainForm : Form
 		process.Start();
 	}
 
-	private void OpenChannelButton_Click(object sender, EventArgs e)
+	private void OpenChannelUrlButton_Click(object sender, EventArgs e)
 	{
 		if (string.IsNullOrWhiteSpace(value: videoUrlTextBox.Text))
 		{
@@ -387,7 +394,56 @@ public partial class MainForm : Form
 		process.Start();
 	}
 
-	private OpenFileDialog MyOpenFileDialog { get; set; } = new();
+	private void SelectFileInExplorerButton_Click(object sender, EventArgs e)
+	{
+		if (SelectedYouTubeVideoItem is null)
+		{
+			return;
+		}
+
+		if (File.Exists(path: SelectedYouTubeVideoItem.FullName) == false)
+		{
+			return;
+		}
+
+		var processInfo =
+			new ProcessStartInfo
+			{
+				FileName = "explorer.exe",
+				Arguments = $"/select, \"{SelectedYouTubeVideoItem.FullName}\"",
+
+				Verb = string.Empty, // Default: [""]
+				WorkingDirectory = string.Empty, // Default: [""]
+
+				ErrorDialog = false, // Default: [false]
+				CreateNoWindow = false, // Default: [false]
+				LoadUserProfile = false, // Default: [false]
+				UseShellExecute = false,// Default: [false]
+
+				StandardErrorEncoding = null, // Default: [null]
+				StandardInputEncoding = null, // Default: [null]
+				StandardOutputEncoding = null, // Default: [null]
+
+				RedirectStandardError = false, // Default: [false]
+				RedirectStandardInput = false, // Default: [false]
+				RedirectStandardOutput = false, // Default: [false]
+
+				Domain = string.Empty, // Default: [""]
+				UserName = string.Empty, // Default: [""]
+				Password = null, // Default: [null]
+				PasswordInClearText = null, // Default: [null]
+				UseCredentialsForNetworkingOnly = false, // Default: [false]
+
+				// Note
+				WindowStyle = ProcessWindowStyle.Normal, // Default: [normal]
+			};
+
+		using var process = new Process();
+
+		process.StartInfo = processInfo;
+
+		process.Start();
+	}
 
 	private void SelectBrowserPathNameButton_Click(object sender, EventArgs e)
 	{
