@@ -21,7 +21,7 @@ public partial class MainForm : Form
 		// **************************************************
 		AcceptButton = searchButton;
 
-		Text = "DT YouTube File Manager - Version 1.2 - Always! Persian Gulf";
+		Text = "DT YouTube File Manager - Version 1.3 - Always! Persian Gulf";
 
 		targetPathTextBox.Text = @"D:\YouTubeDownloads";
 		videoPlayerPathNameTextBox.Text = @"C:\Program Files\VideoLAN\VLC\vlc.exe";
@@ -203,17 +203,22 @@ public partial class MainForm : Form
 			{
 				case 3:
 				{
-					videosDataGridView.Columns[columnIndex].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+					videosDataGridView.Columns[columnIndex]
+						.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 					break;
 				}
 
 				default:
 				{
-					videosDataGridView.Columns[columnIndex].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+					videosDataGridView.Columns[columnIndex]
+						.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 					break;
 				}
 			}
 		}
+
+		videosDataGridView.Columns[5].DefaultCellStyle
+			.Alignment = DataGridViewContentAlignment.MiddleRight;
 	}
 
 	private void VideosDataGridView_KeyDown(object? sender, KeyEventArgs e)
@@ -225,10 +230,12 @@ public partial class MainForm : Form
 		}
 	}
 
-	private void VideosDataGridView_RowEnter(object? sender, DataGridViewCellEventArgs e)
+	private void VideosDataGridView_RowEnter
+		(object? sender, DataGridViewCellEventArgs e)
 	{
 		SelectedYouTubeVideoItem =
-			videosDataGridView.Rows[e.RowIndex].DataBoundItem as YouTubeVideoItem;
+			videosDataGridView.Rows[e.RowIndex].DataBoundItem
+			as YouTubeVideoItem;
 
 		if (SelectedYouTubeVideoItem is null)
 		{
@@ -240,7 +247,8 @@ public partial class MainForm : Form
 		channelUrlTextBox.Text = SelectedYouTubeVideoItem.AuthorChannelUrl;
 	}
 
-	private void VideosDataGridView_CellDoubleClick(object? sender, DataGridViewCellEventArgs e)
+	private void VideosDataGridView_CellDoubleClick
+		(object? sender, DataGridViewCellEventArgs e)
 	{
 		PlaySelectedVideo();
 	}
@@ -256,7 +264,8 @@ public partial class MainForm : Form
 		}
 
 		var selectedYouTubeVideoItem =
-			selectedYouTubeVideoItems[0].DataBoundItem as YouTubeVideoItem;
+			selectedYouTubeVideoItems[0].DataBoundItem
+			as YouTubeVideoItem;
 
 		if (selectedYouTubeVideoItem is null)
 		{
