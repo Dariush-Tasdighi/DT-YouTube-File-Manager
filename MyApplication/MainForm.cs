@@ -21,7 +21,7 @@ public partial class MainForm : Form
 		// **************************************************
 		AcceptButton = searchButton;
 
-		Text = "DT YouTube File Manager - Version 1.3 - Always! Persian Gulf";
+		Text = "DT YouTube File Manager - Version 1.4 - Always! Persian Gulf";
 
 		targetPathTextBox.Text = @"D:\YouTubeDownloads";
 		videoPlayerPathNameTextBox.Text = @"C:\Program Files\VideoLAN\VLC\vlc.exe";
@@ -53,6 +53,7 @@ public partial class MainForm : Form
 		// **************************************************
 		videosDataGridView.KeyDown += VideosDataGridView_KeyDown;
 		videosDataGridView.RowEnter += VideosDataGridView_RowEnter;
+		videosDataGridView.CellPainting += VideosDataGridView_CellPainting;
 		videosDataGridView.CellDoubleClick += VideosDataGridView_CellDoubleClick;
 		// **************************************************
 		// **************************************************
@@ -247,8 +248,45 @@ public partial class MainForm : Form
 		channelUrlTextBox.Text = SelectedYouTubeVideoItem.AuthorChannelUrl;
 	}
 
-	private void VideosDataGridView_CellDoubleClick
-		(object? sender, DataGridViewCellEventArgs e)
+
+	private void VideosDataGridView_CellPainting
+		(object? sender, DataGridViewCellPaintingEventArgs e)
+	{
+		if (e.Value is null)
+		{
+			return;
+		}
+
+		string? cellValue = e.Value.ToString();
+
+		if (Utility.IsFirstLetterIsPersian(text: cellValue))
+		{
+			if (e.Graphics is null ||
+				e.CellStyle is null ||
+				e.FormattedValue is null)
+			{
+				return;
+			}
+
+			e.PaintBackground(
+				clipBounds: e.CellBounds,
+				cellsPaintSelectionBackground: true
+				);
+
+			TextRenderer.DrawText(
+				dc: e.Graphics,
+				bounds: e.CellBounds,
+				font: e.CellStyle.Font,
+				foreColor: e.CellStyle.ForeColor,
+				text: e.FormattedValue.ToString(),
+				flags: TextFormatFlags.RightToLeft | TextFormatFlags.Right
+				);
+
+			e.Handled = true;
+		}
+	}
+
+	private void VideosDataGridView_CellDoubleClick(object? sender, DataGridViewCellEventArgs e)
 	{
 		PlaySelectedVideo();
 	}
